@@ -1,15 +1,23 @@
 package models;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public class Bill {
     private List<Payment> payments;
     private int billAmount;
-    private Date exitTime;
+    private LocalDateTime exitTime;
     private Operator operator;
     private Gate gate;
     private Ticket ticket;
+    public Bill(Ticket ticket, Gate gate, Operator operator, LocalDateTime exitTime, int billAmount){
+        this.ticket = ticket;
+        this.gate = gate;
+        this.exitTime = exitTime;
+        this.operator = operator;
+        this.billAmount = billAmount;
+    }
 
     public List<Payment> getPayments() {
         return payments;
@@ -27,11 +35,11 @@ public class Bill {
         this.billAmount = billAmount;
     }
 
-    public Date getExitTime() {
+    public LocalDateTime getExitTime() {
         return exitTime;
     }
 
-    public void setExitTime(Date exitTime) {
+    public void setExitTime(LocalDateTime exitTime) {
         this.exitTime = exitTime;
     }
 

@@ -11,7 +11,7 @@ public class GateRepository {
 
     public Map<Integer, Gate> gateExitMap = new HashMap<>();
 
-    public Gate findGateByID(int gateId){
+    public Gate findEntryGateByID(int gateId){
         if(gateEntryMap.containsKey(gateId)){
             return gateEntryMap.get(gateId);
         }
@@ -24,5 +24,11 @@ public class GateRepository {
             gateExitMap.put(gate.getNumber(), gate);
         }
 
+    }
+    public Gate findExitGateByID(int gateId){
+        if(gateExitMap.containsKey(gateId)){
+            return gateExitMap.get(gateId);
+        }
+        return null;
     }
 }

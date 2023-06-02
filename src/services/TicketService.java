@@ -1,10 +1,7 @@
 package services;
 
 import models.*;
-import repositories.GateRepository;
-import repositories.OperatorRepository;
-import repositories.SpotRepository;
-import repositories.VehicleRepository;
+import repositories.*;
 import spotAssignmentStrategy.SpotAssign;
 import spotAssignmentStrategy.SpotAssignmentStrategy;
 
@@ -20,6 +17,7 @@ public class TicketService {
     OperatorRepository operatorRepository;
     SpotAssignmentStrategy spotAssign;
     ParkingLot parkingLot;
+    TicketRepository ticketRepository;
     public TicketService(
                          SpotAssignmentStrategy spotAssign,
                          ParkingLot parkingLot
@@ -30,6 +28,7 @@ public class TicketService {
         this.spotRepository = parkingLot.getSpotRepository();
         this.spotAssign = spotAssign;
         this.parkingLot = parkingLot;
+        this.ticketRepository = parkingLot.getTicketRepository();
 
     }
     private void ticketVehicleAssign(Ticket ticket, String vehicleNumber, String vehicleOwner, VehicleType vehicleType){
@@ -42,20 +41,24 @@ public class TicketService {
         }
     }
     private void ticketGateAssign(Ticket ticket, int gateID){
-        if(gateRepository.findGateByID(gateID)!=null){
-            ticket.setGate(gateRepository.findGateByID(gateID));
+        if(gateRepository.findEntryGateByID(gateID)!=null){
+            ticket.setGate(gateRepository.findEntryGateByID(gateID));
         }
 
     }
     private void ticketSpotAssign(Ticket ticket, VehicleType vehicleType){
         ParkingSpot parkingSpot = spotAssign.assignTicketParkingSpot(parkingLot.getFloors(), vehicleType, spotRepository);
         ticket.setParkingSpot(parkingSpot);
+        ticket.setFloor(parkingSpot.getFloor());
 
     }
     private void ticketOperatorAssign(Ticket ticket, int operatorID){
         if(operatorRepository.findOperatorByID(operatorID)!=null){
             ticket.setOperator(operatorRepository.findOperatorByID(operatorID));
         }
+    }
+    private void saveTicket(Ticket ticket){
+        ticketRepository.saveTicket(ticket);
     }
     public Ticket issueTicket(String vehicleNumber, String vehicleOwner, VehicleType vehicleType, int gateId){
         Ticket ticket = new Ticket();
@@ -67,6 +70,7 @@ public class TicketService {
         ticketVehicleAssign(ticket, vehicleNumber, vehicleOwner, vehicleType);
         ticketOperatorAssign(ticket, ticket.getGate().getOperator().getEmpID());
         ticketSpotAssign(ticket, vehicleType);
+        saveTicket(ticket);
         return ticket;
 
     }

@@ -1,9 +1,6 @@
 package models;
 
-import repositories.GateRepository;
-import repositories.OperatorRepository;
-import repositories.SpotRepository;
-import repositories.VehicleRepository;
+import repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +8,9 @@ import java.util.List;
 public class ParkingLot {
     private List<Floor> floors;
     private List<Gate> gates;
+    private TicketRepository ticketRepository;
+
+
     private ParkingLotStatus parkingLotStatus;
     private GateRepository gateRepository;
     private OperatorRepository operatorRepository;
@@ -31,6 +31,7 @@ public class ParkingLot {
         List<Gate> gates;
         SpotRepository spotRepository;
         VehicleRepository vehicleRepository;
+        TicketRepository ticketRepository;
         OperatorRepository operatorRepository;
         GateRepository gateRepository;
 
@@ -85,14 +86,15 @@ public class ParkingLot {
             createEntryGate();
             createFloors();
             createExitGate();
+            System.out.println(gateRepository.gateEntryMap);
+            System.out.println(gateRepository.gateExitMap);
             parkingLot.setFloors(floors);
             parkingLot.setGates(gates);
             parkingLot.setParkingLotStatus(ParkingLotStatus.OPENED);
             parkingLot.setVehicleRepository(vehicleRepository);
             parkingLot.setGateRepository(gateRepository);
+            parkingLot.setTicketRepository(ticketRepository);
 
-
-            System.out.println(gateRepository.gateEntryMap);
             parkingLot.setOperatorRepository(operatorRepository);
             parkingLot.setSpotRepository(spotRepository);
             return parkingLot;
@@ -140,6 +142,15 @@ public class ParkingLot {
 
         public Builder setGates(List<Gate> gates) {
             this.gates = gates;
+            return this;
+        }
+
+        public TicketRepository getTicketRepository() {
+            return ticketRepository;
+        }
+
+        public Builder setTicketRepository(TicketRepository ticketRepository) {
+            this.ticketRepository = ticketRepository;
             return this;
         }
 
@@ -230,4 +241,12 @@ public class ParkingLot {
     public void setVehicleRepository(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
+    public TicketRepository getTicketRepository() {
+        return ticketRepository;
+    }
+
+    public void setTicketRepository(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
+
 }

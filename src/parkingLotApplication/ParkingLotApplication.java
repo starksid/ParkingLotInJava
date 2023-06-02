@@ -1,8 +1,10 @@
 package parkingLotApplication;
 
 import controller.ParkingLotController;
+import dto.BillDTOResponse;
 import dto.ResponseStatus;
 import dto.TicketIssueDTOResponse;
+import models.Bill;
 import models.ParkingLot;
 import models.ParkingLotStatus;
 import models.Ticket;
@@ -24,7 +26,7 @@ public class ParkingLotApplication {
         int numberOfExitGate = sc.nextInt();
         ParkingLot parkingLot = parkingLotController.createParkingLot(numberOfFloors,numberofEntryGate, numberOfExitGate);
         while(parkingLot.getParkingLotStatus().equals(ParkingLotStatus.OPENED)){
-            System.out.println("Is vehicle entering in the Gate");
+            System.out.println("Is vehicle entering in the Gate press 'y' keyword");
             char Bool = sc.next().charAt(0);
             TicketIssueDTOResponse ticketIssueDTOResponse;
             if(Bool=='y'){
@@ -32,6 +34,17 @@ public class ParkingLotApplication {
                 if (ticketIssueDTOResponse.getResponseStatus().equals(ResponseStatus.SUCCESS)){
                     Ticket ticket = ticketIssueDTOResponse.getTicket();
                     parkingLotController.printTicket(ticket);
+                }
+
+            }
+            System.out.println("Is vehicle at exit gate press 'y' keyword ");
+            char B = sc.next().charAt(0);
+            BillDTOResponse billDTOResponse;
+            if(B=='y'){
+                billDTOResponse = parkingLotController.makePayment(parkingLot);
+                if(billDTOResponse.getResponseStatus().equals(ResponseStatus.SUCCESS)){
+                    Bill bill = billDTOResponse.getBill();
+                    parkingLotController.printBill(bill);
                 }
 
             }

@@ -10,7 +10,15 @@ public class Ticket {
     private LocalDateTime entryTime;
     private Gate gate;
     private int ticketNumber;
+    private Floor floor;
 
+    public Floor getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Floor floor) {
+        this.floor = floor;
+    }
 
     public Vehicle getVehicle() {
         return vehicle;
